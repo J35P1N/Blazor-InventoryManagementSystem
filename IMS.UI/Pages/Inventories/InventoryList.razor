@@ -1,0 +1,38 @@
+﻿@using IMS.Entities;
+@using IMS.UseCases.Inventories.Interfaces;
+@inject IViewInventoriesByNameUseCase ViewInventoriesByNameUseCase
+@inject NavigationManager NavigationManager
+@page "/Inventories"
+
+<h3>InventoryList</h3>
+<br/>
+<SearchInventoryComponent OnSearchInventory="OnInventorySearch"></SearchInventoryComponent>
+<br/>
+<InventoryListComponent SearchTerm="@searchTerm"></InventoryListComponent>
+<br/>
+<button 
+    type="button" 
+    class="btn btn-primary"
+    @onclick="AddInventory">Add Inventory</button>
+
+
+@code {
+    private string searchTerm = string.Empty;
+
+    private void OnInventorySearch(string searchTerm)
+    {
+        this.searchTerm = searchTerm;
+    }
+
+    private List<Inventory> _inventories = new List<Inventory>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _inventories = (await ViewInventoriesByNameUseCase.ExecuteAsync()).ToList();
+    }
+
+    private void AddInventory()
+    {
+        NavigationManager.NavigateTo("/addinventory");
+    }
+}
