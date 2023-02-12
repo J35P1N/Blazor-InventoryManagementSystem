@@ -1,0 +1,22 @@
+﻿@using IMS.Entities;
+@inject NavigationManager NavigationManager
+<tr>
+    <td>@InventoryListItem.InventoryName</td>
+    <td>@InventoryListItem.Quantity</td>
+    <td>@InventoryListItem.Price.ToString("c")</td>
+    <td>
+        <button 
+            type="button" 
+            class="btn btn-light"
+            @onclick="@(() => EditInventory(InventoryListItem.InventoryId))">Edit</button>
+    </td>
+</tr>
+
+@code {
+    [Parameter]
+    public Inventory InventoryListItem {get; set;} = new Inventory();
+
+    private void EditInventory(int inventoryId){
+        NavigationManager.NavigateTo($"/editinventory/{inventoryId}");
+    }
+}
