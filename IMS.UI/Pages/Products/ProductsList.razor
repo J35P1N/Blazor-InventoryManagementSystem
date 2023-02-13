@@ -1,0 +1,38 @@
+@using IMS.Entities;
+@using IMS.UseCases.Products.Interfaces;
+@inject IViewProductsByNameUseCase ViewProductsByNameUseCase
+@inject NavigationManager NavigationManager
+@page "/Products"
+
+<h3>ProductList</h3>
+<br/>
+<SearchProductsComponent OnSearchProduct="OnProductSearch"></SearchProductsComponent>
+<br/>
+<ProductListComponent SearchTerm="@searchTerm"></ProductListComponent>
+<br/>
+<button 
+    type="button" 
+    class="btn btn-primary"
+    @onclick="AddProduct">Add Product</button>
+
+
+@code {
+    private string searchTerm = string.Empty;
+
+    private void OnProductSearch(string searchTerm)
+    {
+        this.searchTerm = searchTerm;
+    }
+
+    private List<Product> _Products = new List<Product>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _Products = (await ViewProductsByNameUseCase.ExecuteAsync()).ToList();
+    }
+
+    private void AddProduct()
+    {
+        NavigationManager.NavigateTo("/addProduct");
+    }
+}

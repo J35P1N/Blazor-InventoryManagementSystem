@@ -1,0 +1,22 @@
+﻿@using IMS.Entities;
+@inject NavigationManager NavigationManager
+<tr>
+    <td>@ProductListItem.ProductName</td>
+    <td>@ProductListItem.Quantity</td>
+    <td>@ProductListItem.Price.ToString("c")</td>
+    <td>
+        <button 
+            type="button" 
+            class="btn btn-light"
+            @onclick="@(() => EditProduct(ProductListItem.ProductId))">Edit</button>
+    </td>
+</tr>
+
+@code {
+    [Parameter]
+    public Product ProductListItem {get; set;} = new Product();
+
+    private void EditProduct(int ProductId){
+        NavigationManager.NavigateTo($"/editProduct/{ProductId}");
+    }
+}
